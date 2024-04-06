@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>e-Portfolio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header class="header">
+      <a href="#" class="logo">Portfolio</a>
+      <i class="fa-solid fa-bars" id="menu-icon"></i>
+      <nav class="navbar">
+        <a href="#home" class="active">Home</a>
+        <a href="#about" class="active">About</a>
+        <a href="#services" class="active">Services</a>
+        <a href="#portfolio" class="active">Portfolio</a>
+        <a href="#contact" class="active">Contact</a>
+      </nav>
+    </header>
+
+    <!-- Home Section -->
+    <section class="home" id="home">
+      <div class="home-content">
+        <h3>Hi, My Name is</h3>
+        <h1>Elissa Abou Hassan</h1>
+        <h3>And I'm a <span class="multiple-text"></span></h3>
+        <p>
+          Driven by curiosity to build the future, one line of code at a time.
+        </p>
+        <div class="social-media">
+          <a
+            href="https://github.com/elissa03"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="fa-brands fa-github"></i
+          ></a>
+          <a
+            href="https://www.linkedin.com/in/elissa-abou-hassan/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="fa-brands fa-linkedin"></i
+          ></a>
+        </div>
+        <a
+          href="https://drive.google.com/file/d/1bdMBFy25zU0LGL9TEPMJ_GX41ElxHRHy/view?usp=sharing"
+          class="btn"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Download CV</a
+        >
+      </div>
+      <div class="home-img">
+        <img src="images/profiledp.png" alt="profile dp" />
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+      <div class="about-img">
+        <img src="images/aboutpic.png" alt="about image" />
+      </div>
+      <div class="about-content">
+        <h2 class="heading">About <span>Me</span></h2>
+        <h3>Full-Stack Developer</h3>
+        <p>
+          As a senior Computer Science student with a focus on full-stack
+          development, I've honed my skills in both frontend and backend
+          technologies through rigorous coursework and hands-on projects. My
+          academic journey has been filled with opportunities to explore web
+          development, from creating responsive UIs with HTML, CSS, and
+          JavaScript, to developing server-side applications using Node.js and
+          Express. I've also delved into database management with SQL and
+          MongoDB. Passionate about coding and problem-solving, I've contributed
+          to several projects that not only challenged my technical abilities
+          but also emphasized the importance of teamwork and effective
+          communication. I'm eager to apply my knowledge in a real-world
+          setting, aspiring to innovate and create software solutions that make
+          a difference.
+        </p>
+        <a href="#" class="btn">Read more</a>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+      <h2 class="heading">My <span>Services</span></h2>
+      <div class="services-container">
+        <!-- Web Development -->
+        <div class="services-box">
+          <i class="fa-solid fa-code"></i>
+          <h3>Web Development</h3>
+          <p>
+            I specialize in crafting bespoke websites tailored to your unique
+            needs, ensuring they are not only visually appealing but also
+            responsive, fast, and SEO-optimized for the best online presence.
+          </p>
+          <a href="#" class="btn">Read More</a>
+        </div>
+
+        <!-- UX/UI Design -->
+        <div class="services-box">
+          <i class="fa-solid fa-object-group"></i>
+          <h3>UX/UI Design</h3>
+          <p>
+            Focused on designing user-centric interfaces and experiences that
+            are accessible, intuitive, and delightful across all digital
+            platforms.
+          </p>
+          <a href="#" class="btn">Read More</a>
+        </div>
+
+        <!-- E-commerce Solutions -->
+        <div class="services-box">
+          <i class="fa-solid fa-shopping-cart"></i>
+          <h3>E-commerce Solutions</h3>
+          <p>
+            Developing comprehensive e-commerce platforms that are secure,
+            user-friendly, and optimized for sales conversion, driving growth
+            for your online business.
+          </p>
+          <a href="#" class="btn">Read More</a>
+        </div>
+
+        <!-- Game Development -->
+        <div class="services-box">
+          <i class="fa-solid fa-gamepad"></i>
+          <h3>Game Development</h3>
+          <p>
+            Leveraging HTML5 Canvas and JavaScript, I develop engaging and
+            interactive games. From conceptualization to deployment, I ensure a
+            captivating gaming experience that is both fun and technically
+            robust.
+          </p>
+          <a href="#" class="btn">Read More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+      <h2 class="heading">Latest <span>Projects</span></h2>
+      <div class="portfolio-container">
+        <!-- Workout Tracker Project -->
+        <div class="portfolio-box">
+          <img src="images/1.jpg" alt="project image" />
+          <div class="portfolio-layer">
+            <h4>Workout Tracker</h4>
+            <p>
+              A fitness management system with user registration,
+              workout/nutrition tracking, and AI-powered fitness advice.
+            </p>
+            <a
+              href="https://github.com/elissa03/pulse_portal"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><i class="fa-solid fa-up-right-from-square"></i
+            ></a>
+          </div>
+        </div>
+        <!-- Break The Bricks Game Project -->
+        <div class="portfolio-box">
+          <img src="images/2.jpg" alt="Break The Bricks Game project image" />
+          <div class="portfolio-layer">
+            <h4>Break The Bricks Game</h4>
+            <p>
+              An engaging game where players break bricks with a ball. Includes
+              a chance for power-ups.
+            </p>
+            <a
+              href="https://github.com/elissa03/break-the-bricks"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><i class="fa-solid fa-up-right-from-square"></i
+            ></a>
+          </div>
+        </div>
+        <!-- YouTube Clone Project -->
+        <div class="portfolio-box">
+          <img src="images/3.jpg" alt="YouTube Clone project image" />
+          <div class="portfolio-layer">
+            <h4>YouTube Clone</h4>
+            <p>
+              A platform where users can upload and watch videos, mimicking
+              YouTube's core functionalities.
+            </p>
+            <a
+              href="https://github.com/elissa03/youtube_clone"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><i class="fa-solid fa-up-right-from-square"></i
+            ></a>
+          </div>
+        </div>
+        <!-- Pacman Game Project -->
+        <div class="portfolio-box">
+          <img src="images/4.jpg" alt="Pacman Game project image" />
+          <div class="portfolio-layer">
+            <h4>Pacman Game Project</h4>
+            <p>
+              This project is a recreation of the classic Pacman game using
+              HTML5 Canvas and JavaScript, featuring a Pacman character
+              navigating through a grid, collecting coins, and avoiding ghosts.
+            </p>
+            <a
+              href="https://github.com/elissa03/pacman"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><i class="fa-solid fa-up-right-from-square"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+      <h2 class="heading">Contact <span>Me</span></h2>
+
+      <form action="https://formspree.io/f/xzbnkzga" method="POST">
+        <div class="input-box">
+          <input type="text" name="name" placeholder="Full Name" required />
+          <input
+            type="email"
+            name="_replyto"
+            placeholder="Email Address"
+            required
+          />
+        </div>
+        <div class="input-box">
+          <input type="text" name="mobile" placeholder="Mobile Number" />
+          <input type="text" name="subject" placeholder="Email Subject" />
+        </div>
+        <textarea
+          name="message"
+          id=""
+          cols="30"
+          rows="10"
+          placeholder="Your Message"
+          required
+        ></textarea>
+        <input type="hidden" name="_subject" value="New submission!" />
+        <input type="submit" value="Send Message" class="btn" />
+      </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-text">
+        <p>Copyright &copy; 2024 by Elissa Abou Hassan | All Rights Reserved</p>
+      </div>
+      <div class="footer-iconTop">
+        <a href="#home"><i class="fa-solid fa-angle-up"></i></a>
+      </div>
+    </footer>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
