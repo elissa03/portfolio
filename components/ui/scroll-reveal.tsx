@@ -10,7 +10,7 @@ interface ScrollRevealProps {
     className?: string
 }
 
-export default function ScrollReveal({ children, delay = 0, direction = 'up', className = '' }: ScrollRevealProps) {
+function ScrollReveal({ children, delay = 0, direction = 'up', className = '' }: ScrollRevealProps) {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -48,3 +48,6 @@ export default function ScrollReveal({ children, delay = 0, direction = 'up', cl
         </motion.div>
     )
 }
+
+export default ScrollReveal
+export { ScrollReveal }

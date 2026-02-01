@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* sonarqube-disable-next-line */
+/* Custom dark mode variant - Tailwind CSS v4 feature */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
