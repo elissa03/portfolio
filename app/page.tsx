@@ -47,24 +47,32 @@ const customPortfolioData: PortfolioPageProps = {
 
 const projectSlides = [
     {
-        title: 'E-commerce Platform',
+        title: 'HireHive - Job Platform',
+        button: 'View Project',
+        src: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=3540&auto=format&fit=crop',
+        url: 'https://github.com/elissa03/hirehive',
+        description: 'A comprehensive job platform connecting employers and job seekers',
+    },
+    {
+        title: 'Break the Bricks Game',
+        button: 'View Project',
+        src: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?q=80&w=3540&auto=format&fit=crop',
+        url: 'https://github.com/elissa03/break-the-bricks',
+        description: 'JavaScript-based Breakout game with powerups and dynamic gameplay',
+    },
+    {
+        title: 'Pacman Game',
+        button: 'View Project',
+        src: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=3540&auto=format&fit=crop',
+        url: 'https://github.com/elissa03/pacman',
+        description: 'Classic Pacman recreation using HTML5 Canvas and JavaScript',
+    },
+    {
+        title: 'E-commerce JavaFX',
         button: 'View Project',
         src: 'https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=3540&auto=format&fit=crop',
-    },
-    {
-        title: 'SaaS Dashboard',
-        button: 'View Project',
-        src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=3540&auto=format&fit=crop',
-    },
-    {
-        title: 'Mobile Banking App',
-        button: 'View Project',
-        src: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=3540&auto=format&fit=crop',
-    },
-    {
-        title: 'AI Content Generator',
-        button: 'View Project',
-        src: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=3540&auto=format&fit=crop',
+        url: 'https://github.com/elissa03/ecommerce-javafx',
+        description: 'Desktop e-commerce application built with JavaFX',
     },
 ]
 
