@@ -41,6 +41,7 @@ interface SkillConfig {
 interface OrbitingSkillProps {
     config: SkillConfig
     angle: number
+    scale?: number
 }
 
 interface GlowingOrbitPathProps {
@@ -528,39 +529,45 @@ const skillsConfig: SkillConfig[] = [
 ]
 
 // --- Memoized Orbiting Skill Component ---
-const OrbitingSkill = memo(({ config, angle }: OrbitingSkillProps) => {
+const OrbitingSkill = memo(({ config, angle, scale = 1 }: OrbitingSkillProps) => {
     const [isHovered, setIsHovered] = useState(false)
     const { orbitRadius, size, iconType, label } = config
 
-    const x = Math.cos(angle) * orbitRadius
-    const y = Math.sin(angle) * orbitRadius
+    const x = Math.cos(angle) * orbitRadius * scale
+    const y = Math.sin(angle) * orbitRadius * scale
+    const scaledSize = size * scale
+
+    const handleInteractionStart = () => setIsHovered(true)
+    const handleInteractionEnd = () => setIsHovered(false)
 
     return (
         <div
-            className='absolute top-1/2 left-1/2 transition-all duration-300 ease-out'
+            className='absolute top-1/2 left-1/2 transition-all duration-300 ease-out will-change-transform'
             style={{
-                width: `${size}px`,
-                height: `${size}px`,
+                width: `${scaledSize}px`,
+                height: `${scaledSize}px`,
                 transform: `translate(calc(${x}px - 50%), calc(${y}px - 50%))`,
                 zIndex: isHovered ? 20 : 10,
             }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={handleInteractionStart}
+            onMouseLeave={handleInteractionEnd}
+            onTouchStart={handleInteractionStart}
+            onTouchEnd={handleInteractionEnd}
         >
             <div
                 className={`
-          relative w-full h-full p-2 bg-gray-800/90 backdrop-blur-sm
+          relative w-full h-full p-2 bg-gray-800/90 backdrop-blur-[2px] md:backdrop-blur-sm
           rounded-full flex items-center justify-center
           transition-all duration-300 cursor-pointer
-          ${isHovered ? 'scale-125 shadow-2xl' : 'shadow-lg hover:shadow-xl'}
+          ${isHovered ? 'scale-110 md:scale-125 shadow-2xl' : 'shadow-lg'}
         `}
                 style={{
-                    boxShadow: isHovered ? `0 0 30px ${iconComponents[iconType]?.color}40, 0 0 60px ${iconComponents[iconType]?.color}20` : undefined,
+                    boxShadow: isHovered ? `0 0 20px ${iconComponents[iconType]?.color}40, 0 0 40px ${iconComponents[iconType]?.color}20` : undefined,
                 }}
             >
                 <SkillIcon type={iconType} />
                 {isHovered && (
-                    <div className='absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900/95 backdrop-blur-sm rounded text-xs text-white whitespace-nowrap pointer-events-none z-30'>
+                    <div className='absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900/95 backdrop-blur-[2px] md:backdrop-blur-sm rounded text-xs text-white whitespace-nowrap pointer-events-none z-30'>
                         {label}
                     </div>
                 )}
@@ -574,24 +581,24 @@ OrbitingSkill.displayName = 'OrbitingSkill'
 const GlowingOrbitPath = memo(({ radius, glowColor = 'cyan', animationDelay = 0 }: GlowingOrbitPathProps) => {
     const glowColors = {
         cyan: {
-            primary: 'rgba(6, 182, 212, 0.4)',
-            secondary: 'rgba(6, 182, 212, 0.2)',
-            border: 'rgba(6, 182, 212, 0.3)',
+            primary: 'rgba(6, 182, 212, 0.3)',
+            secondary: 'rgba(6, 182, 212, 0.15)',
+            border: 'rgba(6, 182, 212, 0.25)',
         },
         purple: {
-            primary: 'rgba(147, 51, 234, 0.4)',
-            secondary: 'rgba(147, 51, 234, 0.2)',
-            border: 'rgba(147, 51, 234, 0.3)',
+            primary: 'rgba(147, 51, 234, 0.3)',
+            secondary: 'rgba(147, 51, 234, 0.15)',
+            border: 'rgba(147, 51, 234, 0.25)',
         },
         green: {
-            primary: 'rgba(34, 197, 94, 0.4)',
-            secondary: 'rgba(34, 197, 94, 0.2)',
-            border: 'rgba(34, 197, 94, 0.3)',
+            primary: 'rgba(34, 197, 94, 0.3)',
+            secondary: 'rgba(34, 197, 94, 0.15)',
+            border: 'rgba(34, 197, 94, 0.25)',
         },
         orange: {
-            primary: 'rgba(249, 115, 22, 0.4)',
-            secondary: 'rgba(249, 115, 22, 0.2)',
-            border: 'rgba(249, 115, 22, 0.3)',
+            primary: 'rgba(249, 115, 22, 0.3)',
+            secondary: 'rgba(249, 115, 22, 0.15)',
+            border: 'rgba(249, 115, 22, 0.25)',
         },
     }
 
@@ -599,19 +606,19 @@ const GlowingOrbitPath = memo(({ radius, glowColor = 'cyan', animationDelay = 0 
 
     return (
         <div
-            className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none'
+            className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none will-change-transform'
             style={{
                 width: `${radius * 2}px`,
                 height: `${radius * 2}px`,
                 animationDelay: `${animationDelay}s`,
             }}
         >
-            {/* Glowing background */}
+            {/* Glowing background - reduced blur on mobile */}
             <div
                 className='absolute inset-0 rounded-full animate-pulse'
                 style={{
                     background: `radial-gradient(circle, transparent 30%, ${colors.secondary} 70%, ${colors.primary} 100%)`,
-                    boxShadow: `0 0 60px ${colors.primary}, inset 0 0 60px ${colors.secondary}`,
+                    boxShadow: `0 0 40px ${colors.primary}, inset 0 0 40px ${colors.secondary}`,
                     animation: 'pulse 4s ease-in-out infinite',
                     animationDelay: `${animationDelay}s`,
                 }}
@@ -622,7 +629,7 @@ const GlowingOrbitPath = memo(({ radius, glowColor = 'cyan', animationDelay = 0 
                 className='absolute inset-0 rounded-full'
                 style={{
                     border: `1px solid ${colors.border}`,
-                    boxShadow: `inset 0 0 20px ${colors.secondary}`,
+                    boxShadow: `inset 0 0 15px ${colors.secondary}`,
                 }}
             />
         </div>
@@ -634,6 +641,40 @@ GlowingOrbitPath.displayName = 'GlowingOrbitPath'
 export default function OrbitingSkills() {
     const [time, setTime] = useState(0)
     const [isPaused, setIsPaused] = useState(false)
+    const [scale, setScale] = useState(1)
+    const [isMounted, setIsMounted] = useState(false)
+
+    // Calculate responsive scale based on viewport
+    useEffect(() => {
+        setIsMounted(true)
+
+        const updateScale = () => {
+            const width = window.innerWidth
+            if (width < 400) {
+                setScale(0.6)
+            } else if (width < 640) {
+                setScale(0.7)
+            } else if (width < 768) {
+                setScale(0.8)
+            } else {
+                setScale(1)
+            }
+        }
+
+        updateScale()
+
+        let resizeTimer: NodeJS.Timeout
+        const debouncedResize = () => {
+            clearTimeout(resizeTimer)
+            resizeTimer = setTimeout(updateScale, 150)
+        }
+
+        window.addEventListener('resize', debouncedResize)
+        return () => {
+            window.removeEventListener('resize', debouncedResize)
+            clearTimeout(resizeTimer)
+        }
+    }, [])
 
     useEffect(() => {
         if (isPaused) return
@@ -659,22 +700,51 @@ export default function OrbitingSkills() {
         { radius: 220, glowColor: 'green', delay: 2 },
     ]
 
+    const centerSize = 80 * scale
+    const containerHeight = isMounted ? Math.min(550 * scale, window.innerWidth - 40) : 550
+
+    // Prevent rendering glitchy state before mounting
+    if (!isMounted) {
+        return (
+            <main className='w-full flex items-center justify-center overflow-hidden py-8 md:py-12'>
+                <div className='relative w-full max-w-[550px] h-[550px] flex items-center justify-center'>
+                    <div className='w-20 h-20 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center animate-pulse' />
+                </div>
+            </main>
+        )
+    }
+
     return (
-        <main className='w-full flex items-center justify-center overflow-hidden py-12'>
+        <main className='w-full flex items-center justify-center overflow-hidden py-8 md:py-12'>
             <div
-                className='relative w-[calc(100vw-40px)] h-[calc(100vw-40px)] max-w-[550px] max-h-[550px] md:w-[550px] md:h-[550px] flex items-center justify-center'
+                className='relative w-full max-w-[550px] flex items-center justify-center touch-none select-none'
+                style={{
+                    height: `${containerHeight}px`,
+                    maxHeight: '550px',
+                }}
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
+                onTouchStart={() => setIsPaused(true)}
+                onTouchEnd={() => setIsPaused(false)}
             >
                 {/* Central "Code" Icon with enhanced glow */}
-                <div className='w-20 h-20 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center z-10 relative shadow-2xl'>
-                    <div className='absolute inset-0 rounded-full bg-cyan-500/30 blur-xl animate-pulse'></div>
-                    <div className='absolute inset-0 rounded-full bg-purple-500/20 blur-2xl animate-pulse' style={{ animationDelay: '1s' }}></div>
+                <div
+                    className='bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center z-10 relative shadow-2xl will-change-transform'
+                    style={{
+                        width: `${centerSize}px`,
+                        height: `${centerSize}px`,
+                    }}
+                >
+                    <div className='absolute inset-0 rounded-full bg-cyan-500/20 md:bg-cyan-500/30 blur-lg md:blur-xl animate-pulse'></div>
+                    <div
+                        className='absolute inset-0 rounded-full bg-purple-500/15 md:bg-purple-500/20 blur-xl md:blur-2xl animate-pulse'
+                        style={{ animationDelay: '1s' }}
+                    ></div>
                     <div className='relative z-10'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
-                            width='36'
-                            height='36'
+                            width={36 * scale}
+                            height={36 * scale}
                             viewBox='0 0 24 24'
                             fill='none'
                             stroke='url(#gradient)'
@@ -698,7 +768,7 @@ export default function OrbitingSkills() {
                 {orbitConfigs.map((config) => (
                     <GlowingOrbitPath
                         key={`path-${config.radius}`}
-                        radius={config.radius}
+                        radius={config.radius * scale}
                         glowColor={config.glowColor}
                         animationDelay={config.delay}
                     />
@@ -707,7 +777,7 @@ export default function OrbitingSkills() {
                 {/* Render orbiting skill icons */}
                 {skillsConfig.map((config) => {
                     const angle = time * config.speed + (config.phaseShift || 0)
-                    return <OrbitingSkill key={config.id} config={config} angle={angle} />
+                    return <OrbitingSkill key={config.id} config={config} angle={angle} scale={scale} />
                 })}
             </div>
         </main>
