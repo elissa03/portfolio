@@ -542,12 +542,19 @@ const OrbitingSkill = memo(({ config, angle, scale = 1 }: OrbitingSkillProps) =>
 
     return (
         <div
-            className='absolute top-1/2 left-1/2 transition-all duration-300 ease-out will-change-transform'
+            className='absolute will-change-transform'
             style={{
                 width: `${scaledSize}px`,
                 height: `${scaledSize}px`,
-                transform: `translate(calc(${x}px - 50%), calc(${y}px - 50%))`,
+                left: '50%',
+                top: '50%',
+                transform: `translate3d(${x - scaledSize / 2}px, ${y - scaledSize / 2}px, 0)`,
                 zIndex: isHovered ? 20 : 10,
+                transition: 'width 0.3s ease-out, height 0.3s ease-out, z-index 0s',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                transformStyle: 'preserve-3d',
+                WebkitTransformStyle: 'preserve-3d',
             }}
             onMouseEnter={handleInteractionStart}
             onMouseLeave={handleInteractionEnd}
@@ -681,13 +688,24 @@ export default function OrbitingSkills() {
 
         let animationFrameId: number
         let lastTime = performance.now()
+        const targetFPS = 60
+        const frameInterval = 1000 / targetFPS
+        let frameDelta = 0
 
         const animate = (currentTime: number) => {
-            const deltaTime = (currentTime - lastTime) / 1000
-            lastTime = currentTime
-
-            setTime((prevTime) => prevTime + deltaTime)
             animationFrameId = requestAnimationFrame(animate)
+
+            const elapsed = currentTime - lastTime
+            frameDelta += elapsed
+
+            // Throttle updates to target FPS for consistent animation
+            if (frameDelta >= frameInterval) {
+                const deltaTime = frameDelta / 1000
+                lastTime = currentTime
+                frameDelta = frameDelta % frameInterval
+
+                setTime((prevTime) => prevTime + deltaTime)
+            }
         }
 
         animationFrameId = requestAnimationFrame(animate)
@@ -721,6 +739,9 @@ export default function OrbitingSkills() {
                 style={{
                     height: `${containerHeight}px`,
                     maxHeight: '550px',
+                    contain: 'layout style paint',
+                    backfaceVisibility: 'hidden',
+                    perspective: '1000px',
                 }}
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
