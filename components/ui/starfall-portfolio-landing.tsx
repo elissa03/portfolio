@@ -22,10 +22,35 @@ const AuroraBackground: React.FC = () => {
     const mountRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
         if (!mountRef.current) return
+
+        // Performance check - disable on low-end devices
+        const isLowPerformance =
+            typeof navigator !== 'undefined' &&
+            (navigator.hardwareConcurrency < 4 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+
+        if (isLowPerformance) {
+            // Use CSS gradient fallback for low-end devices
+            if (mountRef.current) {
+                mountRef.current.style.background =
+                    'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 50%, rgba(240, 147, 251, 0.1) 100%)'
+                mountRef.current.style.position = 'fixed'
+                mountRef.current.style.top = '0'
+                mountRef.current.style.left = '0'
+                mountRef.current.style.width = '100%'
+                mountRef.current.style.height = '100%'
+                mountRef.current.style.zIndex = '0'
+            }
+            return
+        }
+
         const currentMount = mountRef.current
         const scene = new THREE.Scene()
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
-        const renderer = new THREE.WebGLRenderer()
+        const renderer = new THREE.WebGLRenderer({
+            antialias: false, // Disable for performance
+            powerPreference: 'high-performance',
+        })
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)) // Limit pixel ratio
         renderer.setSize(window.innerWidth, window.innerHeight)
         renderer.domElement.style.position = 'fixed'
         renderer.domElement.style.top = '0'
@@ -52,27 +77,54 @@ const AuroraBackground: React.FC = () => {
         const mesh = new THREE.Mesh(geometry, material)
         scene.add(mesh)
         let animationFrameId: number
-        const animate = () => {
+        let lastFrameTime = 0
+        const targetFPS = 30 // Reduce from 60 to 30 FPS for better performance
+        const frameInterval = 1000 / targetFPS
+
+        // Pause animation when tab is not visible
+        let isVisible = !document.hidden
+        const handleVisibilityChange = () => {
+            isVisible = !document.hidden
+        }
+        document.addEventListener('visibilitychange', handleVisibilityChange)
+
+        const animate = (currentTime: number) => {
             animationFrameId = requestAnimationFrame(animate)
-            material.uniforms.iTime.value += 0.016
+
+            // Skip rendering if tab is not visible
+            if (!isVisible) return
+
+            // Throttle to 30 FPS
+            const elapsed = currentTime - lastFrameTime
+            if (elapsed < frameInterval) return
+
+            lastFrameTime = currentTime - (elapsed % frameInterval)
+            material.uniforms.iTime.value += 0.033 // Adjusted for 30 FPS
             renderer.render(scene, camera)
         }
+
+        let resizeTimeout: NodeJS.Timeout
         const handleResize = () => {
-            renderer.setSize(window.innerWidth, window.innerHeight)
-            material.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight)
+            clearTimeout(resizeTimeout)
+            resizeTimeout = setTimeout(() => {
+                renderer.setSize(window.innerWidth, window.innerHeight)
+                material.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight)
+            }, 150)
         }
         window.addEventListener('resize', handleResize)
-        animate()
+        animate(0)
         return () => {
             cancelAnimationFrame(animationFrameId)
             window.removeEventListener('resize', handleResize)
+            document.removeEventListener('visibilitychange', handleVisibilityChange)
+            clearTimeout(resizeTimeout)
             if (currentMount.contains(renderer.domElement)) currentMount.removeChild(renderer.domElement)
             renderer.dispose()
             material.dispose()
             geometry.dispose()
         }
     }, [])
-    return <div ref={mountRef} />
+    return <div ref={mountRef} style={{ willChange: 'auto' }} />
 }
 
 // --- DEFAULT DATA ---

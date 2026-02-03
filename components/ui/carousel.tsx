@@ -25,6 +25,9 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
     const frameRef = useRef<number | undefined>(undefined)
 
     useEffect(() => {
+        // Only run animation for current slide
+        if (index !== current) return
+
         const animate = () => {
             if (!slideRef.current) return
 
@@ -44,7 +47,7 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
                 cancelAnimationFrame(frameRef.current)
             }
         }
-    }, [])
+    }, [index, current])
 
     const handleMouseMove = (event: React.MouseEvent) => {
         const el = slideRef.current
@@ -94,8 +97,8 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
                         alt={title}
                         src={src}
                         onLoad={imageLoaded}
-                        loading='eager'
-                        decoding='sync'
+                        loading={Math.abs(index - current) <= 1 ? 'eager' : 'lazy'}
+                        decoding='async'
                     />
                     {current === index && <div className='absolute inset-0 bg-black/30 transition-all duration-1000' />}
                 </div>

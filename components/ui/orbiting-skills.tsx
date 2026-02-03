@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, memo } from 'react'
+import React, { useEffect, useState, memo, useRef } from 'react'
 
 // --- Type Definitions ---
 type IconType =
@@ -650,6 +650,8 @@ export default function OrbitingSkills() {
     const [isPaused, setIsPaused] = useState(false)
     const [scale, setScale] = useState(1)
     const [isMounted, setIsMounted] = useState(false)
+    const containerRef = useRef<HTMLDivElement>(null)
+    const [isInView, setIsInView] = useState(false)
 
     // Calculate responsive scale based on viewport
     useEffect(() => {
@@ -683,8 +685,24 @@ export default function OrbitingSkills() {
         }
     }, [])
 
+    // Intersection Observer to pause animation when not in view
     useEffect(() => {
-        if (isPaused) return
+        if (!containerRef.current) return
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInView(entry.isIntersecting)
+            },
+            { threshold: 0.1 }
+        )
+
+        observer.observe(containerRef.current)
+        return () => observer.disconnect()
+    }, [isMounted])
+
+    useEffect(() => {
+        // Pause animation if not in view or manually paused
+        if (isPaused || !isInView) return
 
         let animationFrameId: number
         let lastTime = performance.now()
@@ -710,7 +728,7 @@ export default function OrbitingSkills() {
 
         animationFrameId = requestAnimationFrame(animate)
         return () => cancelAnimationFrame(animationFrameId)
-    }, [isPaused])
+    }, [isPaused, isInView])
 
     const orbitConfigs: Array<{ radius: number; glowColor: GlowColor; delay: number }> = [
         { radius: 100, glowColor: 'cyan', delay: 0 },
@@ -733,7 +751,7 @@ export default function OrbitingSkills() {
     }
 
     return (
-        <main className='w-full flex items-center justify-center overflow-hidden py-8 md:py-12'>
+        <main ref={containerRef} className='w-full flex items-center justify-center overflow-hidden py-8 md:py-12'>
             <div
                 className='relative w-full max-w-[550px] flex items-center justify-center touch-none select-none'
                 style={{
