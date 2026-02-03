@@ -23,7 +23,7 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang='en' suppressHydrationWarning>
+        <html lang='en' suppressHydrationWarning className='overflow-x-hidden'>
             <head>
                 <script
                     dangerouslySetInnerHTML={{
@@ -40,7 +40,7 @@ export default function RootLayout({
                     }}
                 />
             </head>
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+            <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}>{children}</body>
         </html>
     )
 }
