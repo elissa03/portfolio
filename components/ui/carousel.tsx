@@ -2,6 +2,7 @@
 import { ArrowRight } from 'lucide-react'
 import { useState, useRef, useId, useEffect } from 'react'
 
+// this
 interface SlideData {
     title: string
     button: string
