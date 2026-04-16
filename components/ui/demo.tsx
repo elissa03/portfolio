@@ -2,7 +2,7 @@
 
 import { PortfolioPage, PortfolioPageProps } from '@/components/ui/starfall-portfolio-landing'
 
-// Example: Custom Portfolio Data
+// Example: Custom Portfolio Data //
 const customPortfolioData: PortfolioPageProps = {
     logo: {
         initials: 'AT',
