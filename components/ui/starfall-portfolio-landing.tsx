@@ -45,6 +45,7 @@ const AuroraBackground: React.FC = () => {
             return
         }
 
+        //
         try {
             const scene = new THREE.Scene()
             const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
